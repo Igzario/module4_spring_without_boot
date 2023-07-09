@@ -1,23 +1,30 @@
 package ru.practicum.user;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
-    private final UserService userService;
+    private final UserServiceImpl userService = new UserServiceImpl();
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    @GetMapping("/users")
+    public List<User> userTake() {
+        return userService.getUsers();
     }
 
-    @PostMapping
-    public User saveNewUser(@RequestBody User user) {
-        return userService.saveUser(user);
+    @PostMapping("/users")
+    public ResponseEntity userGive(@Valid @RequestBody User user) {
+        return userService.userPost(user);
+    }
+
+    @PutMapping("/users")
+    public ResponseEntity userUpdate(@Valid @RequestBody User user) {
+        return userService.userPut(user);
     }
 }
